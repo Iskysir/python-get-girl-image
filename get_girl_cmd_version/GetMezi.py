@@ -107,7 +107,12 @@ def download_img_from_page(t, page_url):
 
 def save_file(d, filename, img_url):
     print(img_url+"=========")
-    img = requests.get(img_url)
+    # 反爬措施
+    Picreferer = {
+        'User-Agent': 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)',
+        'Referer': 'http://i.meizitu.net'
+    }   
+    img = requests.get(img_url, headers=Picreferer)
     name = str(d+"/"+filename)
     with open(name, "wb") as code:
         code.write(img.content)
@@ -163,6 +168,3 @@ if __name__ == '__main__':
             my_thread = MyThread(download_imgs, (d, img_dirs.get(d)))
             my_thread.start()
             my_thread.join()
-
-
-
